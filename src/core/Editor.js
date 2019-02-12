@@ -7,7 +7,8 @@ class Editor {
     }
 
     initContainer () {
-
+        this.container.contentEditable = true;
+        this.container.classList.add('jz-editor');
     }
 }
 
