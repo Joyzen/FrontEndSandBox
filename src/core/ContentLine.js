@@ -14,14 +14,16 @@ class ContentLine {
 
         el.classList.add("jz-content-line");
         el.style.top = `${this._content.rowLen * 32}px`;
-        el.innerText = this._line;
-
+        
+        this._spanEl = document.createElement("span");
+        this._el.appendChild(this._spanEl)
         this._contentEl.appendChild(this._el);
+        this._spanEl.innerText = this._line;
     }
 
     updateLine (line) {
         this._line = line;
-        el.innerText = this._line;
+        this._spanEl.innerText = this._line;
     }
 }
 

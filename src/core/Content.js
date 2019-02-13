@@ -13,40 +13,46 @@ class Content {
         this.initContent();
     }
 
-    initContent () {
+    initContent() {
         this._el = document.createElement("div");
         this._el.classList.add("jz-content");
 
         this._container.appendChild(this._el);
         this.cursor = new InputCursor(this);
 
-        this.cursor.inputEvent.on(e=>{
-
+        this.addLine();//初始化添加一行
+        this.cursor.inputEvent.on(e => {
+            this.updateLine(e);
         });
         this.cursor.newLineEvent.on(e => {
-            this.addLine(e);
+            this.addLine();
         });
     }
 
-    addLine (line) {
+    addLine(line) {
         this._lines.push(new ContentLine(this, line));
-        // this
+        this.cursor.nextLine();
     }
 
-    updateLine(line){
-
+    updateLine(line) {
+        this.currentLine.updateLine(line);
+        this.cursor.nextCol();
     }
 
-    focus () {
+    focus() {
         this.cursor.focus();
     }
 
-    get rowLen () {
+    get rowLen() {
         return this._lines.length;
     }
 
-    get el () {
+    get el() {
         return this._el;
+    }
+
+    get currentLine() {
+        return this._lines[this.cursor.currentRowNum];
     }
 
 }

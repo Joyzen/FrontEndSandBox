@@ -3,10 +3,11 @@ import { Event } from "./Event";
 class InputCursor {
     constructor(content) {
         this.container = content.el;
-
+        
         this.inputarea = undefined;//当前输入位置指示器
-        this._row = 0;//当前输入指针行号
-        this._col = 0;//当前输入指针列号
+        this._row = -1;//当前输入指针行号
+        this._col = -1;//当前输入指针列号
+        this._maxLineLength = 40;
 
         this._inputEvent = new Event();
         this._newLineEvent = new Event();
@@ -14,7 +15,7 @@ class InputCursor {
         this.initInputarea();
     }
 
-    initInputarea () {
+    initInputarea() {
         this.inputarea = document.createElement("textarea");
         this.inputarea.classList.add("jz-inputarea");
         this.inputarea.wrap = "off";
@@ -34,36 +35,57 @@ class InputCursor {
 
     }
 
-    focus () {
+    focus() {
         this.inputarea.focus();
     }
 
-    nextLine () {
+    nextLine() {
         this._row += 1;
+        this._col = -1;
+        this.updataCursor();
     }
 
-    _onInput () {
-        const value = this.inputarea.value;
-        console.log(value);
-        this._inputEvent.raise(value);
-        if (value.substr(-1, 1) === "\n") {
-            const lines = value.split(/\n/g);
-            const newValue = lines.slice(-2, -1)[0];
-            this._newLineEvent.raise(newValue);
-            this.inputarea.value = "";//重新开始一行
+    nextCol() {
+        this._col += 1;
+        this.updataCursor();
+    }
+
+    _onInput() {
+        if (this.value.substr(-1, 1) === "\n" || this.value.length > this._maxLineLength) {
+            this.value = "";//重新开始一行
+            this._newLineEvent.raise();
+        } else {
+            this._inputEvent.raise(this.value);
         }
     }
 
-    updataCursor(){
-        
+    updataCursor() {
+        this.inputarea.style.top = `${this._row * 32}px`;
+        this.inputarea.style.left = `${this._col * 13}px`;
     }
 
-    get inputEvent () {
+    get inputEvent() {
         return this._inputEvent;
     }
 
-    get newLineEvent () {
+    get newLineEvent() {
         return this._newLineEvent;
+    }
+
+    get currentRowNum() {
+        return this._row;
+    }
+
+    set currentColNum(num) {
+        this._col = parseInt(num);
+    }
+
+    get value() {
+        return this.inputarea.value;
+    }
+
+    set value(v) {
+        this.inputarea.value = v;
     }
 }
 
