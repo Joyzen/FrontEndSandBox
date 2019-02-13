@@ -20,6 +20,9 @@ class Content {
         this._container.appendChild(this._el);
         this.cursor = new InputCursor(this);
 
+        this.cursor.inputEvent.on(e=>{
+
+        });
         this.cursor.newLineEvent.on(e => {
             this.addLine(e);
         });
@@ -27,6 +30,11 @@ class Content {
 
     addLine (line) {
         this._lines.push(new ContentLine(this, line));
+        // this
+    }
+
+    updateLine(line){
+
     }
 
     focus () {

@@ -38,6 +38,10 @@ class InputCursor {
         this.inputarea.focus();
     }
 
+    nextLine () {
+        this._row += 1;
+    }
+
     _onInput () {
         const value = this.inputarea.value;
         console.log(value);
@@ -48,6 +52,10 @@ class InputCursor {
             this._newLineEvent.raise(newValue);
             this.inputarea.value = "";//重新开始一行
         }
+    }
+
+    updataCursor(){
+        
     }
 
     get inputEvent () {
