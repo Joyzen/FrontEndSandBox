@@ -1,3 +1,6 @@
+import { Config } from "./Config";
+import { Util } from "./Util";
+
 class ContentLine {
     constructor(content, line = "") {
         this._editor = content.editor;
@@ -13,8 +16,9 @@ class ContentLine {
         const el = this._el = document.createElement("div");
 
         el.classList.add("jz-content-line");
-        el.style.top = `${this._content.rowLen * 32}px`;
-        
+        el.style.top = `${this._content.rowLen * Util.getFontHeight("a")}px`;
+        el.style.fontSize = `${Config.fontSize}px`;
+
         this._spanEl = document.createElement("span");
         this._el.appendChild(this._spanEl)
         this._contentEl.appendChild(this._el);

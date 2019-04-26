@@ -2,6 +2,7 @@ import "./assets/css/main.css";
 import "./assets/css/normalize.css";
 import "./assets/css/editor.css";
 import { Editor } from "./core/Editor";
+import {Util} from "./core/Util";
 
 const editor = new Editor("container");
 
@@ -13,3 +14,4 @@ document.onfocus = function () {
 
 
 window.editor = editor;
+window.Util = Util;

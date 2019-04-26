@@ -4,7 +4,7 @@ class Config {
     }
 }
 
-Config.fontSize = "18px";
+Config.fontSize = 18;
 Config.fontFamily = "Consolas, Courier New, monospace";
 
 export { Config };

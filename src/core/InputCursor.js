@@ -1,9 +1,11 @@
 import { Event } from "./Event";
+import { Util } from "./Util";
 
 class InputCursor {
     constructor(content) {
         this.container = content.el;
-        
+        this.content = content;
+
         this.inputarea = undefined;//当前输入位置指示器
         this._row = -1;//当前输入指针行号
         this._col = -1;//当前输入指针列号
@@ -15,7 +17,7 @@ class InputCursor {
         this.initInputarea();
     }
 
-    initInputarea() {
+    initInputarea () {
         this.inputarea = document.createElement("textarea");
         this.inputarea.classList.add("jz-inputarea");
         this.inputarea.wrap = "off";
@@ -35,22 +37,22 @@ class InputCursor {
 
     }
 
-    focus() {
+    focus () {
         this.inputarea.focus();
     }
 
-    nextLine() {
+    nextLine () {
         this._row += 1;
         this._col = -1;
         this.updataCursor();
     }
 
-    nextCol() {
+    nextCol () {
         this._col += 1;
         this.updataCursor();
     }
 
-    _onInput() {
+    _onInput () {
         if (this.value.substr(-1, 1) === "\n" || this.value.length > this._maxLineLength) {
             this.value = "";//重新开始一行
             this._newLineEvent.raise();
@@ -59,33 +61,37 @@ class InputCursor {
         }
     }
 
-    updataCursor() {
-        this.inputarea.style.top = `${this._row * 32}px`;
-        this.inputarea.style.left = `${this._col * 13}px`;
+    updataCursor () {
+        this.inputarea.style.top = `${this._row * Util.getFontHeight(this.currentContentLine._line)}px`;
+        this.inputarea.style.left = `${Util.getFontWidth(this.currentContentLine._line)}px`;
     }
 
-    get inputEvent() {
+    get inputEvent () {
         return this._inputEvent;
     }
 
-    get newLineEvent() {
+    get newLineEvent () {
         return this._newLineEvent;
     }
 
-    get currentRowNum() {
+    get currentRowNum () {
         return this._row;
     }
 
-    set currentColNum(num) {
+    set currentColNum (num) {
         this._col = parseInt(num);
     }
 
-    get value() {
+    get value () {
         return this.inputarea.value;
     }
 
-    set value(v) {
+    set value (v) {
         this.inputarea.value = v;
+    }
+
+    get currentContentLine () {
+        return this.content._lines[this.currentRowNum];
     }
 }
 
